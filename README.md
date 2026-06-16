@@ -1,74 +1,80 @@
-# FlowCore Codespace
+# 🧩 FlowCore Codespace
 
-A lightweight, portable version of the FlowCore VPS agent toolkit, optimized for **GitHub Codespaces** (Ubuntu container, no systemd, portable paths).
+> *Portable automation toolkit for GitHub Codespaces & Ubuntu — accounts, monitoring, scraping, pipelines.*
 
-## What's Included
+[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-1f883d?style=for-the-badge&logo=github&logoColor=white)](https://github.com/leonidastcejorp/flowcore-codespace)
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04%20%7C%2024.04-E95420?style=flat&logo=ubuntu)](https://ubuntu.com/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python)](https://python.org)
 
-| Directory | Contents |
-|-----------|----------|
-| `tools/flowcore/` | Full FlowCore framework (modules, core, utils, scripts, configs) |
-| `tools/ghost_creator.py` | Discord account creation automation |
-| `tools/ghost_tester.py` | Ghost account testing utilities |
-| `tools/pipeline.py` | Income monitoring pipeline |
-| `tools/farming_guide.py` | Airdrop farming guide & automation |
-| `tools/airdrop_monitor.py` | Airdrop monitoring tool |
-| `tools/proxy_updater.py` | Proxy list updater |
-| `tools/daily_report.py` | Daily report generator |
-| `tools/system_monitor.py` | System monitoring script |
-| `examples/` | Example usage scripts |
-| `.devcontainer/` | Codespace dev container configuration |
+---
 
-## Quick Start
+## ✨ What's Inside
 
-### Option 1: GitHub Codespaces (Recommended)
+| Directory | Description |
+|-----------|-------------|
+| `tools/flowcore/` | Core framework — modules, browser automation, utils |
+| `tools/*.py` | Standalone tools: ghost creator, pipeline, monitors |
+| `examples/` | Ready-to-run shell scripts |
+| `.devcontainer/` | Codespace auto-configuration |
+| `setup.sh` | One-command installer (idempotent) |
 
-1. Push this repo to GitHub
-2. Click **"Code" → "Open with Codespaces"**
-3. The post-create script runs automatically — wait for setup to finish
+## 🚀 Quick Start
 
-### Option 2: Manual Setup (Any Ubuntu system)
+### Option 1: GitHub Codespaces (Recommended — 2 clicks)
+Just click the badge above or:
+1. Go to **[github.com/leonidastcejorp/flowcore-codespace](https://github.com/leonidastcejorp/flowcore-codespace)**
+2. Click **Code** → **Open with Codespaces**
+3. Wait ~1-2 min — setup runs automatically
+4. Terminal is ready: `python3 tools/system_monitor.py`
 
+### Option 2: Manual (Any Ubuntu 22.04/24.04)
 ```bash
-git clone <your-repo-url> flowcore-codespace
+git clone https://github.com/leonidastcejorp/flowcore-codespace.git
 cd flowcore-codespace
 bash setup.sh
 ```
 
-### Option 3: VS Code Dev Containers
+### Option 3: GitHub Actions (Scheduled Jobs)
+Even when your codespace is stopped, you can schedule runs via Actions.
+See **[TUTORIAL.md](TUTORIAL.md)** for a full guide.
 
-Open the folder in VS Code → Reopen in Container (requires Docker).
+---
 
-## Usage Examples
+## 🛠️ Tools Overview
 
 ```bash
-# Run the FlowCore registrar
-python -m flowcore.modules.registrar --help
+# System health
+python3 tools/system_monitor.py
 
-# Start the watcher
-python -m flowcore.modules.watcher
+# Income pipeline (monitoring & scraping)
+python3 tools/pipeline.py
 
-# Run the pipeline
-python tools/pipeline.py
+# Ghost account creator (Discord, etc.)
+python3 tools/ghost_creator.py --platform discord --count 3
 
-# Create Discord accounts
+# FlowCore framework
+python3 -m flowcore.modules.registrar --help
+python3 -m flowcore.modules.watcher
+
+# Example scripts
 bash examples/create_discord_accounts.sh
-
-# Run monitoring pipeline
 bash examples/run_pipeline.sh
-
-# Run security scans
-bash examples/scan_subs.sh
+bash examples/scan_subs.sh subs.txt
 ```
 
-## Requirements
+## 📖 Documentation
 
-- GitHub Codespaces (recommended) or any Ubuntu 22.04+ system
-- ~200MB disk space for tools + Playwright browsers
-- Internet access for API calls
+- **[TUTORIAL.md](TUTORIAL.md)** — Step-by-step usage guide (🇮🇩 Indonesian)
+- **`cat tools/flowcore/README.md`** — FlowCore package docs
 
-## Notes
+## 💡 Key Features
 
-- No systemd dependencies — all tools are portable scripts
-- Playwright installs Chromium browser on first setup
-- Go is installed for security tools (nuclei, etc.)
-- Tool configs live in `tools/flowcore/config/`
+- **Codespace-optimized**: No systemd, no persistent cron — uses GitHub Actions for scheduling
+- **Clean IPs**: GitHub Codespaces IPs are less aggressively blocked than VPS datacenter IPs
+- **Idempotent setup**: Run `bash setup.sh` any number of times
+- **32GB storage**: Codespace standard — `sudo apt clean` to free space
+- **Pre-installed**: Python 3.10+, Git, Docker (on Codespaces) already available
+
+## 📄 License
+
+MIT — see [LICENSE](tools/flowcore/LICENSE).

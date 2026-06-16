@@ -2,9 +2,15 @@
     "name": "FlowCore Codespace",
     "image": "mcr.microsoft.com/devcontainers/universal:2",
     "postCreateCommand": "bash setup.sh",
+    "forwardPorts": [],
     "customizations": {
         "vscode": {
-            "extensions": ["ms-python.python"]
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "GitHub.copilot",
+                "eamodio.gitlens"
+            ]
         }
     }
 }

@@ -1,288 +1,411 @@
 # 📖 FlowCore Codespace — Complete Usage Guide
 
-> *Your portable automation toolkit — run from anywhere, zero config. Built for GitHub Codespaces.*
+> *Your portable automation toolkit — run from anywhere, zero config. Built for GitHub Codespaces & Ubuntu 22.04/24.04.*
 
 ---
 
-## 📑 Table of Contents
+## 📑 Daftar Isi
 
-- [🚀 Getting Started](#-getting-started)
-- [📁 Repository Layout](#-repository-layout)
-- [🎯 Using the Tools](#-using-the-tools)
-- [👻 Ghost Framework](#-ghost-framework)
-- [🌐 Airdrop Farming](#-airdrop-farming)
-- [📡 Security Scanning](#-security-scanning)
-- [🔄 Proxy Management](#-proxy-management)
-- [📊 Daily Reports & Monitoring](#-daily-reports--monitoring)
-- [⚡ Pro Tips](#-pro-tips)
-- [🐛 Troubleshooting](#-troubleshooting)
+- [🚀 Cara Mulai (Step by Step)](#-cara-mulai-step-by-step)
+  - [Cara 1: GitHub Codespaces (Rekomendasi — Termudah)](#cara-1-github-codespaces-rekomendasi--termudah)
+  - [Cara 2: Clone & Setup Manual](#cara-2-clone--setup-manual)
+  - [Cara 3: GitHub Actions (Automated Jobs)](#cara-3-github-actions-automated-jobs)
+- [📁 Struktur Folder](#-struktur-folder)
+- [🛠️ Tools & Cara Pakai](#%EF%B8%8F-tools--cara-pakai)
+  - [System Monitor](#system-monitor)
+  - [Income Pipeline](#income-pipeline)
+  - [Daily Report](#daily-report)
+  - [Proxy Updater](#proxy-updater)
+  - [Airdrop Monitor](#airdrop-monitor)
+  - [Farming Guide](#farming-guide)
+  - [Ghost Creator (Akun Discord, dll.)](#ghost-creator-akun-discord-dll)
+  - [Ghost Tester](#ghost-tester)
+  - [FlowCore Framework CLI](#flowcore-framework-cli)
+- [⚙️ Setup Ulang / Re-Run](#%EF%B8%8F-setup-ulang--re-run)
+- [📊 Automasi dengan GitHub Actions](#-automasi-dengan-github-actions)
+- [💡 Pro Tips & Best Practices](#-pro-tips--best-practices)
+- [❌ Troubleshooting — Yang Paling Sering Error](#-troubleshooting--yang-paling-sering-error)
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Cara Mulai (Step by Step)
 
-### Option 1: GitHub Codespaces (2 clicks)
+### Cara 1: GitHub Codespaces (Rekomendasi — Termudah)
+
+Cocok untuk yang **tidak ingin install apa-apa di komputer lokal**. Semua jalan di cloud browser.
+
+**Langkah-langkah:**
+
+1. **Buka repo di browser:**
+   https://github.com/leonidastcejorp/flowcore-codespace
+
+2. **Klik tombol hijau** `Code` → pilih **Open with Codespaces**.
+
+   ![Codespaces button](https://docs.github.com/assets/cb-138303/images/help/codespaces/new-codespace-button.png)
+   *(Ilustrasi: tombol hijau di kanan atas)*
+
+3. **Tunggu 1-2 menit.**
+   - GitHub membuat container Ubuntu universal:2
+   - `postCreateCommand` otomatis menjalankan `bash setup.sh`
+   - Semua tools terinstall otomatis (Playwright, Go, Node, flowcore package)
+
+4. **Verifikasi instalasi:**
+   ```bash
+   python3 tools/system_monitor.py
+   ```
+   Jika keluar laporan sistem (CPU, RAM, disk), berarti sukses! ✅
+
+5. **Mulai pakai tools:**
+   ```bash
+   # Coba pipeline
+   python3 tools/pipeline.py
+   ```
+
+> **Catatan**: Codespaces punya batas gratis ~60 jam/bulan (untuk akun GitHub gratis). Matikan codespace saat tidak dipakai biar kuota tidak habis.
+
+### Cara 2: Clone & Setup Manual
+
+Kalau mau jalan di **Ubuntu lokal** (22.04 atau 24.04) atau VPS:
 
 ```bash
-# Just open in browser — everything's pre-configured
-# No setup required beyond clicking "Open in Codespaces"
-```
-
-1. Go to https://github.com/leonidastcejorp/flowcore-codespace
-2. Click **Code** → **Open with Codespaces**
-3. Wait ~30 seconds — postCreateCommand runs automatically
-4. Run `python3 tools/system_monitor.py` to verify ✅
-
-### Option 2: Clone & Run Anywhere
-
-```bash
+# 1. Clone repo
 git clone https://github.com/leonidastcejorp/flowcore-codespace.git
 cd flowcore-codespace
+
+# 2. Jalanin setup
 bash setup.sh
-```
 
-### Verification
-
-```bash
-# Check everything installed
-python3 --version         # ≥ 3.10 ✅
-go version                  # ≥ 1.21 ✅
-node --version             # ≥ 18 ✅
-playwright --version        # Should show version ✅
-python3 tools/system_monitor.py  # Test run ✅
-```
-
----
-
-## 📁 Repository Layout
-
-```
-flowcore-codespace/
-├── .devcontainer/          # Codespace configuration
-│   ├── devcontainer.json   #   Container definition
-│   └── Dockerfile          #   Custom image build
-├── tools/                  # All executable tools
-│   ├── flowcore/           #   Full framework (core, modules, utils)
-│   ├── ghost_creator.py    #   👻 Mass account creator
-│   ├── ghost_tester.py     #   🔍 Bypass tester
-│   ├── pipeline.py         #   💰 Income pipeline
-│   ├── farming_guide.py    #   🌾 Airdrop strategies
-│   ├── airdrop_monitor.py  #   📡 Airdrop scanner
-│   ├── proxy_updater.py    #   🔄 Proxy refresh
-│   ├── daily_report.py     #   📊 Report generator
-│   └── system_monitor.py   #   📈 System health
-├── examples/               # Ready-to-run examples
-│   ├── create_discord_accounts.sh
-│   ├── run_pipeline.sh
-│   └── scan_subs.sh
-├── setup.sh                # Auto-install script
-├── requirements.txt        # Python deps
-├── README.md               # Quickstart
-└── TUTORIAL.md             # This file
-```
-
----
-
-## 🎯 Using the Tools
-
-### System Monitor
-
-```bash
-# Quick health check
+# 3. Setup selesai — verifikasi
 python3 tools/system_monitor.py
-
-# Sample output:
-# 📡 System Health Report
-# CPU: 12% | RAM: 1.2/7.6GB (16%)
-# Disk: 4.1/32GB (13%) | Uptime: 2h 15m
 ```
 
-### Income Pipeline
+**Yang dilakukan setup.sh:**
+- Deteksi OS (Ubuntu 22.04 vs 24.04)
+- Pengecekan internet, disk, RAM (pre-flight check)
+- Install system packages: python3-pip, git, curl, wget, unzip, ca-certificates
+- Install Python deps: playwright, aiohttp, aiohttp-socks, pyyaml, requests, beautifulsoup4, lxml
+- Install Playwright + Chromium (dengan `--with-deps`)
+- Install **Go 1.22.5** (jika belum ada)
+- Install **NVM + Node.js 20** (jika belum ada)
+- Install **FlowCore** sebagai editable package dari `tools/flowcore/`
+- Output summary ✅/❌ per step
 
-```bash
-# Run the opportunity scraper
-python3 tools/pipeline.py
+**💡 Idempotent**: Setup bisa diulang kapan saja tanpa masalah. Step yang sudah berhasil akan di-skip.
 
-# Scrapes: Upwork, Freelancer, PeoplePerHour
-# + Testnet faucets and airdrop opportunities
-# Output: formatted report sent to configured destination
-```
+### Cara 3: GitHub Actions (Automated Jobs)
 
-### Daily Report
+Cocok untuk **menjalankan task terjadwal** meskipun codespace sedang mati.
 
-```bash
-# Generate a daily briefing
-python3 tools/daily_report.py
-
-# Shows: system stats + recent market/industry news
-```
-
-### Proxy Updater
-
-```bash
-# Download & test fresh proxies
-python3 tools/proxy_updater.py
-
-# Sources: 4 public proxy lists
-# Result: ~5-50 working proxies saved to ~/.flowcore/proxies/
-```
-
-### Airdrop Monitor
-
-```bash
-# Check latest airdrop campaigns
-python3 tools/airdrop_monitor.py
-
-# Scans: DropsTab, QuestN, testnet faucets
-# Output: categorized list with reward estimates
-```
-
-### Farming Guide
-
-```bash
-# View airdrop strategies
-python3 tools/farming_guide.py
-
-# Covers: testnet farming, bridge quests, staking airdrops
-# Interactive mode with step-by-step instructions
-```
-
----
-
-## 👻 Ghost Framework
-
-### Create Accounts
-
-```bash
-# Discord — works from anywhere
-python3 tools/ghost_creator.py --platform discord --count 5
-
-# With proxy for tricky platforms
-python3 tools/ghost_creator.py --platform fiverr --proxy socks5://user:pass@ip:1080
-
-# Save to file
-python3 tools/ghost_creator.py --platform discord --count 10 --output accounts.json
-
-# Using the example script
-bash examples/create_discord_accounts.sh
-```
-
-### Test Bypass Capabilities
-
-```bash
-# Test Turnstile/Cloudflare bypass
-python3 tools/ghost_tester.py --url "https://example.com/login"
-
-# Test with custom fingerprint
-python3 tools/ghost_tester.py --url "https://example.com" --fingerprint "windows-chrome-120"
-```
-
-### Platform Compatibility
-
-| Platform | Codespace | VPS | Notes |
-|----------|-----------|-----|-------|
-| Discord | ✅ Works | ✅ | No captcha needed |
-| Fiverr | ⚠️ Limited | ❌ Blocked | Needs residential proxy |
-| Reddit | ⚠️ Limited | ❌ Blocked | Phone verification |
-| Gmail | ❌ Blocked | ❌ Blocked | SMS verification |
-
-> 💡 **Codespace advantage**: GitHub Codespaces IPs are less aggressively blocked than VPS datacenter IPs!
-
----
-
-## 🌐 Airdrop Farming
-
-The farming guide covers these testnet/airdrop strategies:
-
-### Testnet Faucets
-
-| Chain | Faucet URL | Token | Difficulty |
-|-------|------------|-------|------------|
-| Sepolia ETH | faucet.sepolia.dev | sETH | 🟢 Easy |
-| Goerli ETH | goerlifaucet.com | gETH | 🟢 Easy |
-| Polygon Mumbai | faucet.polygon.technology | MATIC | 🟡 Medium |
-| Avalanche Fuji | faucet.avax.network | AVAX | 🟢 Easy |
-| BSC Testnet | testnet.binance.org/faucet-smart | BNB | 🟡 Medium |
-
-### Bridge & Swap
-
-```bash
-# Step-by-step guide for:
-python3 tools/farming_guide.py --topic bridge
-python3 tools/farming_guide.py --topic swap
-```
-
-### Auto-Farm
-
-```bash
-# Run with automation (requires API keys)
-python3 tools/farming_guide.py --auto --chain sepolia
-```
-
-> ⚠️ **Note**: Manual steps (captchas, SMS) can't be fully automated — the guide tells you exactly when to intervene.
-
----
-
-## 📡 Security Scanning
-
-### Subdomain Enumeration
-
-```bash
-# Install scanning tools
-bash examples/scan_subs.sh
-
-# Or run a manual scan
-subfinder -d example.com -silent | httpx -silent > live_subs.txt
-
-# Scan for vulnerabilities (if nuclei installed)
-nuclei -l live_subs.txt -severity critical,high -o critical.txt
-```
-
-### One-Line Recon
-
-```bash
-subfinder -d target.com -silent | httpx -silent | nuclei -severity critical,high
-```
-
-> 💡 Codespaces have clean IPs — less likely to be rate-limited than VPS.
-
----
-
-## 🔄 Proxy Management
-
-### Quick Start
-
-```bash
-# Download and test proxies
-python3 tools/proxy_updater.py
-
-# Use with ghost creator
-python3 tools/ghost_creator.py --platform fiverr --proxy-file ~/.flowcore/proxies/https.txt
-```
-
-### Manual Proxy Test
-
-```bash
-# Test a single proxy
-curl -x http://1.2.3.4:8080 -s -o /dev/null -w "%{http_code}" https://api.ipify.org
-
-# Should return 200 for working proxies
-```
-
----
-
-## 📊 Daily Reports & Monitoring
-
-Set up recurring monitoring with GitHub Actions:
-
-1. Go to your repo **Actions** tab
-2. Add a workflow (`.github/workflows/daily.yml`):
+**Buat workflow `.github/workflows/daily.yml`** di repo kamu:
 
 ```yaml
 name: Daily Report
 on:
   schedule:
-    - cron: '0 6 * * *'  # Every day at 6 AM UTC
+    - cron: '0 6 * * *'   # Setiap jam 6 pagi UTC
+  workflow_dispatch:        # Bisa juga di-trigger manual
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup & Run
+        run: |
+          pip install -r requirements.txt
+          python3 tools/daily_report.py
+```
+
+**Penjelasan:**
+- `schedule` : cron expression — `'0 6 * * *'` = tiap hari jam 06:00 UTC
+- `workflow_dispatch` : biar bisa klik "Run workflow" manual dari tab Actions
+- `runs-on: ubuntu-latest` : GitHub menyediakan runner Ubuntu gratis
+
+**Contoh lain — Pipeline monitoring setiap 4 jam:**
+```yaml
+name: Monitor Pipeline
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Pipeline
+        run: |
+          pip install -r requirements.txt
+          pip install playwright aiohttp aiohttp-socks
+          playwright install --with-deps chromium
+          python3 tools/pipeline.py --mode monitor --interval 300
+```
+
+---
+
+## 📁 Struktur Folder
+
+```
+flowcore-codespace/
+│
+├── .devcontainer/
+│   ├── devcontainer.json      # Config untuk GitHub Codespaces
+│   │                         # (image universal:2, auto-run setup.sh)
+│
+├── tools/
+│   ├── flowcore/              # Framework inti (Python package)
+│   │   ├── setup.py           #   Package installer
+│   │   ├── requirements.txt   #   Dependencies
+│   │   ├── flowcore/          #   Source code
+│   │   │   ├── core/          #     Browser, fingerprint engine
+│   │   │   ├── modules/       #     Registrar, scraper, watcher
+│   │   │   └── utils/         #     Names, network helpers
+│   │   ├── config/            #   Configuration files
+│   │   ├── scripts/           #   CLI entry points
+│   │   └── tests/             #   Unit tests
+│   │
+│   ├── system_monitor.py      # 📈 System health check
+│   ├── pipeline.py            # 💰 Income monitoring pipeline
+│   ├── ghost_creator.py       # 👻 Mass account creator
+│   ├── ghost_tester.py        # 🔍 Bypass / fingerprint tester
+│   ├── farming_guide.py       # 🌾 Airdrop farming guide
+│   ├── airdrop_monitor.py     # 📡 Airdrop scanner
+│   ├── proxy_updater.py       # 🔄 Proxy list downloader
+│   └── daily_report.py        # 📊 Daily report generator
+│
+├── examples/
+│   ├── create_discord_accounts.sh   # Demo: bikin akun Discord
+│   ├── run_pipeline.sh              # Demo: jalanin pipeline
+│   └── scan_subs.sh                 # Demo: scan subdomain
+│
+├── setup.sh                  # 🚀 Auto-installer (idempotent)
+├── requirements.txt          # Python dependencies (root)
+├── README.md                 # Quick start (file ini ringkas)
+└── TUTORIAL.md               # Kamu lagi baca ini
+```
+
+---
+
+## 🛠️ Tools & Cara Pakai
+
+### System Monitor
+
+Cek kesehatan sistem dalam satu perintah:
+
+```bash
+python3 tools/system_monitor.py
+```
+
+**Contoh output:**
+```
+📡 System Health Report
+CPU: 12% | RAM: 1.2/7.6GB (16%)
+Disk: 4.1/32GB (13%) | Uptime: 2h 15m
+```
+
+Cocok dipakai setiap kali login untuk memastikan sistem siap.
+
+### Income Pipeline
+
+Memonitor peluang penghasilan dari berbagai sumber:
+
+```bash
+# Jalankan pipeline
+python3 tools/pipeline.py
+
+# Monitor dengan interval (detik)
+python3 tools/pipeline.py --mode monitor --interval 60
+
+# Satu kali scrape
+python3 tools/pipeline.py --mode once
+```
+
+**Yang di-scrape:**
+- Platform freelance (Upwork, Freelancer, PeoplePerHour)
+- Testnet faucets dan airdrop opportunities
+- Output: laporan terformat
+
+### Daily Report
+
+Buat laporan harian otomatis:
+
+```bash
+python3 tools/daily_report.py
+```
+
+**Output:**
+- Statistik sistem hari ini
+- Berita market/industri terkini
+- Ringkasan aktivitas pipeline
+
+### Proxy Updater
+
+Download dan tes proxy gratis:
+
+```bash
+# Download fresh proxies
+python3 tools/proxy_updater.py
+
+# Hasil disimpan di ~/.flowcore/proxies/
+# Format: http.txt, https.txt, socks5.txt
+# Rata-rata: 5-50 proxy yang bekerja
+```
+
+**Cara pakai proxy dengan tools lain:**
+```bash
+python3 tools/ghost_creator.py --platform discord \
+  --proxy-file ~/.flowcore/proxies/https.txt
+```
+
+### Airdrop Monitor
+
+Pantau airdrop campaign terbaru:
+
+```bash
+# Cek airdrop
+python3 tools/airdrop_monitor.py
+
+# Filter chain tertentu
+python3 tools/airdrop_monitor.py --chain ethereum
+
+# Output: daftar airdrop terbaru + estimasi reward
+```
+
+**Sumber:**
+- DropsTab
+- QuestN
+- Testnet faucets
+- Social media mentions
+
+### Farming Guide
+
+Panduan interaktif untuk airdrop farming:
+
+```bash
+# Lihat semua topik
+python3 tools/farming_guide.py
+
+# Topik spesifik
+python3 tools/farming_guide.py --topic bridge
+python3 tools/farming_guide.py --topic swap
+python3 tools/farming_guide.py --topic testnet
+
+# Mode auto-farm (butuh API keys)
+python3 tools/farming_guide.py --auto --chain sepolia
+```
+
+**Topik yang dicakup:**
+| Topik | Deskripsi |
+|-------|-----------|
+| testnet | Farming token testnet (Sepolia, Goerli, dll.) |
+| bridge | Bridge quests antar chain |
+| swap | Swap & provide liquidity |
+| stake | Staking airdrop |
+
+### Ghost Creator (Akun Discord, dll.)
+
+Buat akun secara massal dengan Playwright:
+
+```bash
+# Bikin 5 akun Discord
+python3 tools/ghost_creator.py --platform discord --count 5
+
+# Dengan proxy
+python3 tools/ghost_creator.py --platform discord --count 10 \
+  --proxy socks5://user:pass@ip:1080
+
+# Simpan ke file
+python3 tools/ghost_creator.py --platform discord --count 10 \
+  --output accounts.json
+
+# Pakai contoh script
+bash examples/create_discord_accounts.sh 5
+```
+
+**Platform yang didukung:**
+| Platform | Codespace | Notes |
+|----------|-----------|-------|
+| Discord | ✅ Works | No captcha |
+| Fiverr | ⚠️ Limited | Butuh residential proxy |
+| Reddit | ⚠️ Limited | Butuh phone verification |
+| Gmail | ❌ Blocked | SMS verification required |
+
+> 💡 **Keunggulan Codespace**: IP GitHub Codespaces lebih "bersih" daripada IP VPS datacenter — lebih jarang kena rate limit atau captcha.
+
+### Ghost Tester
+
+Test apakah suatu website bisa diakses via Playwright:
+
+```bash
+# Test URL
+python3 tools/ghost_tester.py --url "https://example.com/login"
+
+# Test dengan fingerprint khusus
+python3 tools/ghost_tester.py --url "https://example.com" \
+  --fingerprint "windows-chrome-120"
+
+# Test proxy
+python3 tools/ghost_tester.py --url "https://example.com" \
+  --proxy socks5://user:pass@ip:1080
+```
+
+### FlowCore Framework CLI
+
+Gunakan modul-modul framework secara langsung:
+
+```bash
+# Registrasi massal
+python3 -m flowcore.modules.registrar --help
+
+# Watcher (monitor otomatis)
+python3 -m flowcore.modules.watcher
+
+# Scraper
+python3 -m flowcore.modules.scraper --source upwork --limit 20
+
+# Refresh proxies via script
+python3 -m flowcore.scripts.refresh_proxies
+
+# Run pipeline via flowcore
+python3 -m flowcore.scripts.run_pipeline
+```
+
+---
+
+## ⚙️ Setup Ulang / Re-Run
+
+Kapan saja kamu merasa ada tools yang hilang atau error:
+
+```bash
+# Re-run setup (idempotent — aman)
+bash setup.sh
+
+# Atau manual — install Python deps saja
+pip install -r tools/flowcore/requirements.txt
+pip install playwright aiohttp aiohttp-socks pyyaml
+
+# Install ulang Chromium
+playwright install --with-deps chromium
+
+# Re-install flowcore package
+cd tools/flowcore && pip install -e .
+```
+
+---
+
+## 📊 Automasi dengan GitHub Actions
+
+Karena Codespaces tidak punya systemd atau cron, gunakan **GitHub Actions** untuk task berulang.
+
+### Workflow: Daily Report (setiap jam 6 pagi)
+
+Buat file `.github/workflows/daily-report.yml`:
+
+```yaml
+name: 📊 Daily Report
+on:
+  schedule:
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -290,97 +413,229 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run Report
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
         run: |
           pip install -r requirements.txt
-          python3 tools/daily_report.py
+          pip install playwright aiohttp aiohttp-socks pyyaml requests beautifulsoup4 lxml
+          playwright install --with-deps chromium
+      - name: Generate report
+        run: python3 tools/daily_report.py
 ```
 
-Optionally configure **Slack/Discord/Telegram notifications** via Actions.
+### Workflow: Airdrop Monitor (setiap 3 jam)
+
+```yaml
+name: 📡 Airdrop Scan
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup & Scan
+        run: |
+          pip install -r requirements.txt
+          pip install playwright aiohttp pyyaml
+          playwright install --with-deps chromium
+          python3 tools/airdrop_monitor.py
+```
+
+### Menambahkan Secrets
+
+Untuk API key atau credentials rahasia:
+
+1. Buka repo → **Settings** → **Secrets and variables** → **Actions**
+2. Klik **New repository secret**
+3. Nama: `DISCORD_WEBHOOK_URL` (atau apapun)
+4. Value: URL atau key kamu
+5. Di workflow,akses via `${{ secrets.DISCORD_WEBHOOK_URL }}`
 
 ---
 
-## ⚡ Pro Tips
+## 💡 Pro Tips & Best Practices
 
-| Tip | Description |
-|-----|-------------|
-| **Keep Codespace alive** | Use `gh codespace list` to check; set `"idleTimeout": "120m"` in devcontainer.json |
-| **Skip reinstall** | Your codespace persists — tools stay installed across sessions |
-| **Use `uv`** | `pip install uv && uv pip install -r requirements.txt` for 10x faster installs |
-| **Multiple terminals** | Split in VS Code: one for pipelines, one for manual commands |
-| **Port forwarding** | Codespaces can expose ports (useful for browser automation debugging) |
-| **Environment vars** | Set sensitive keys in Codespaces secrets, not in code |
-| **GitHub Actions** | Automate pipeline runs even when codespace is stopped |
-| **Storage limit** | Codespaces have ~32GB — run `sudo apt clean` periodically |
-| **Different from VPS** | No systemd, no persistent cron; use Actions for scheduling |
+### Keep Codespace Alive
 
-### Differences from VPS Version
+Secara default, Codespaces mati setelah **30 menit idle**. Untuk memperpanjang:
 
-| Feature | Codespace Version | VPS Version |
-|---------|------------------|-------------|
-| **Persistence** | Session-based | Permanent |
-| **Cron jobs** | GitHub Actions | Cron daemon |
-| **Systemd** | ❌ No | ✅ Yes |
-| **Credentials** | Codespace secrets | Config files |
-| **IP reputation** | 🟢 Cleaner | 🔴 Datacenter |
-| **Storage** | ~32GB | 40GB |
-| **Setup time** | 30 seconds | ~10 minutes |
-
----
-
-## 🐛 Troubleshooting
-
-### Codespace Won't Open
-
-```bash
-# Delete and recreate
-gh codespace delete
-gh codespace create -R leonidastcejorp/flowcore-codespace -b main
+1. Buka Settings di Codespace
+2. Set idle timeout (maks 240 menit di akun gratis)
+3. Atau atur di `devcontainer.json`:
+```json
+"idleTimeout": 120
 ```
 
-### Tools Not Found
+### Hemat Storage
+
+Codespaces cuma punya ~32GB. Bersihkan secara berkala:
 
 ```bash
-# Reinstall
-bash setup.sh
-
-# Or manually
-pip install -r requirements.txt
-playwright install --with-deps chromium
-```
-
-### "No space left"
-
-```bash
-# Clean
 sudo apt clean
 pip cache purge
 rm -rf ~/.cache/*
 ```
 
-### Playwright Errors
+### Multiple Terminals
+
+Di VS Code Codespace:
+- Buka terminal baru: `Ctrl+Shift+5` (split)
+- Satu untuk pipeline berjalan
+- Satu untuk command manual
+- Satu untuk monitoring
+
+### Environment Variables
+
+Jangan simpan API key di file kode! Gunakan Codespaces secrets:
+
+1. https://github.com/settings/secrets/codespaces
+2. Tambah secret (misal: `OPENAI_API_KEY`, `DISCORD_TOKEN`)
+3. Akses di Python:
+```python
+import os
+api_key = os.environ.get("OPENAI_API_KEY")
+```
+
+### Gunakan `uv` untuk Install 10x Lebih Cepat
 
 ```bash
-# Reinstall browser
+pip install uv
+uv pip install -r requirements.txt
+```
+
+### Perbedaan dari VPS Version
+
+| Feature | Codespace | VPS |
+|---------|-----------|-----|
+| **Persistence** | Session-based (mati saat idle) | Permanent 24/7 |
+| **Cron** | GitHub Actions | System cron daemon |
+| **Systemd** | ❌ No | ✅ Yes |
+| **IP reputation** | 🟢 Cleaner | 🔴 Datacenter |
+| **Storage** | ~32GB | 40GB+ |
+| **Setup time** | ~1-2 menit auto | ~10 menit manual |
+| **Biaya** | Gratis 60 jam/bulan | Bayar $5-20/bulan |
+
+---
+
+## ❌ Troubleshooting — Yang Paling Sering Error
+
+### "playwright: command not found"
+
+**Penyebab**: Playwright belum terinstall atau PATH tidak sesuai.
+
+**Solusi:**
+```bash
+pip install playwright
+playwright install --with-deps chromium
+```
+
+Atau jalankan ulang setup:
+```bash
+bash setup.sh
+```
+
+### "ModuleNotFoundError: No module named 'flowcore'"
+
+**Penyebab**: FlowCore package belum diinstall.
+
+**Solusi:**
+```bash
+cd tools/flowcore && pip install -e .
+```
+
+Verifikasi:
+```bash
+python3 -c "import flowcore; print(flowcore.__file__)"
+# Harus ada output path
+```
+
+### "No space left on device"
+
+**Penyebab**: Storage Codespace penuh (~32GB).
+
+**Solusi:**
+```bash
+# Bersihkan cache apt
+sudo apt clean
+
+# Bersihkan pip cache
+pip cache purge
+
+# Bersihkan cache umum
+rm -rf ~/.cache/*
+du -sh ~/.cache   # Cek berapa yang terpakai
+
+# Hapus Playwright browsers yang tidak dipakai
 playwright uninstall chromium
 playwright install chromium
 ```
 
-### Can't Push Changes
+### "Kena Rate Limit / 429 Too Many Requests"
 
+**Penyebab**: Terlalu banyak request dalam waktu singkat.
+
+**Solusi:**
+1. **Gunakan proxy** — IP Codespace bisa kena rate limit juga
+2. **Tambah delay** antar request
+3. **Gunakan rotasi User-Agent** — flowcore sudah include ini
+4. **Ganti IP** — matikan dan nyalakan ulang codespace (dapat IP baru)
+
+Cek IP saat ini:
+```bash
+curl -s https://api.ipify.org
+```
+
+### "Chromium didn't start / Playwright errors"
+
+**Penyebab**: Dependency sistem kurang.
+
+**Solusi:**
+```bash
+# Reinstall total
+playwright uninstall chromium
+playwright install --with-deps chromium
+
+# Atau install system libs manual
+sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 \
+  libatk-bridge2.0-0 libcups2 libdrm2 libdbus-1-3 \
+  libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 \
+  libxrandr2 libgbm1 libpango-1.0-0 libcairo2 \
+  libasound2 libatspi2.0-0
+```
+
+### "Git push rejected"
+
+**Penyebab**: Branch ketinggalan dari remote.
+
+**Solusi:**
 ```bash
 git pull --rebase origin main
 git push origin main
 ```
 
-### Secrets / API Keys
+### "Codespace mati terlalu cepat"
 
-```bash
-# For sensitive keys, always use Codespaces secrets:
-# 1. Go to github.com/settings/secrets/codespaces
-# 2. Add your API keys
-# 3. Access in code via os.environ.get("OPENAI_API_KEY")
-```
+**Penyebab**: Default idle timeout 30 menit.
+
+**Solusi:**
+- Settings codespace → perpanjang idle timeout
+- Atau jalankan process di background supaya dianggap "aktif"
+
+### "Workflow Actions tidak jalan"
+
+**Penyebab**: Workflow belum di-push ke branch default, atau sintaks YAML salah.
+
+**Solusi:**
+1. Cek tab Actions di repo — ada error?
+2. Validasi YAML di https://yamlchecker.com
+3. Pastikan workflow ada di `.github/workflows/`
+4. Trigger manual dulu (workflow_dispatch) sebelum test cron
 
 ---
 
@@ -388,12 +643,15 @@ git push origin main
 
 | Resource | Link |
 |----------|------|
-| Repo | https://github.com/leonidastcejorp/flowcore-codespace |
-| VPS Backup | https://github.com/leonidastcejorp/flowcore-vps |
-| Ghost Framework | `python3 tools/ghost_creator.py --help` |
-| Airdrop Guide | `python3 tools/farming_guide.py` |
-| Pipeline | `python3 tools/pipeline.py` |
+| **Repository** | https://github.com/leonidastcejorp/flowcore-codespace |
+| **VPS Version** | https://github.com/leonidastcejorp/flowcore-vps |
+| **FlowCore Docs** | `cat tools/flowcore/README.md` |
+| **Ghost Creator** | `python3 tools/ghost_creator.py --help` |
+| **Pipeline** | `python3 tools/pipeline.py --help` |
+| **System Monitor** | `python3 tools/system_monitor.py` |
+| **Codepaces Docs** | https://docs.github.com/en/codespaces |
 
 ---
 
 *Built with Hermes Agent · Part of the FlowCore Ecosystem*
+*Last updated: June 2025*
